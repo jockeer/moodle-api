@@ -98,6 +98,24 @@ router.get('/api/alumnosPorGrupo', async (req, res, next) => {
      );
     
 })
+router.get('/api/cantidadMateriasCategoria', async (req, res, next) => {
+
+    // var query = connection.query('INSERT INTO personaje(nombre, apellido, biografia) VALUES(?, ?, ?)', ['Homero', 'Simpson', 'Esposo de Marge y padre de Bart, Lisa y Maggie.'], function(error, result){
+    var query = pool.query(`select mdl_course_categories.id,mdl_course_categories.name, COUNT(mdl_course.category) as "CantidadMaterias"
+                           from mdl_course_categories join mdl_course
+                           on (mdl_course_categories.id = mdl_course.category)
+                           GROUP BY mdl_course_categories.id,mdl_course_categories.name
+                            `, function(error, result){
+        if(error){
+           throw error;
+        }else{
+           console.log(result);
+        }
+        res.json(result)
+      }
+     );
+    
+})
 
 
 
